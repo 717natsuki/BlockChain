@@ -1,6 +1,6 @@
 function BlockChain(){
   this.chain = [];
-  this.newTransactions = [];
+  this.pendingTransactions = [];
 }
 
 BlockChain.prototype.createNewBlock = function (nonce, previousBlockHash, hash) {
@@ -10,15 +10,15 @@ BlockChain.prototype.createNewBlock = function (nonce, previousBlockHash, hash) 
     // 時間
     timestamp: Date.now(),
     // トランズアクションは変更不可能なためここに保存
-    transactions: this.newTransactions,
+    transactions: this.pendingTransactions,
     // チェーンのため一個前のハッシュとつながっていないといけない
     previousBlockHash: previousBlockHash,
     hash: hash,
     nonce: nonce,
   }
 
-// 先ほどnewTransactionsに追加したため毎回クリーンアップしたい。
-  this.newTransactions = [];
+// 先ほどpendingTransactionsに追加したため毎回クリーンアップしたい。
+  this.pendingTransactions = [];
   // 今回のブロックをchain array に入れる
   this.chain.push(newBlock);
   return newBlock;
@@ -28,5 +28,19 @@ BlockChain.prototype.createNewBlock = function (nonce, previousBlockHash, hash) 
 BlockChain.prototype.getLastBlock = function () {
   return this.chain[this.chain.length - 1];
 };
+
+// お支払い（トランズアクション）が完了したら起きるメソッド。pendingTransactionsはまだ実際に認証されたわけではない。
+BlockChain.prototype.createNewTransaction = function(amount, sender, recipient){
+  const newTransactions = {
+    amount: amount,
+    sender: sender,
+    recipient: recipient,
+  };
+  // このPendingTransactionsの配列に入れた後、createNewBlockで認証するこれが正しいか
+  this.pendingTransactions.push(newTransactions);
+  return this.getLastBlock()['index'] + 1;
+}
+
+
 
 module.exports = BlockChain;
