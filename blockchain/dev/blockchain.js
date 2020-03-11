@@ -23,3 +23,10 @@ BlockChain.prototype.createNewBlock = function (nonce, previousBlockHash, hash) 
   this.chain.push(newBlock);
   return newBlock;
 };
+
+// このメソッドで毎回最後のブロックを出力できるようになる
+BlockChain.prototype.getLastBlock = function () {
+  return this.chain[this.chain.length - 1];
+};
+
+module.exports = BlockChain;
