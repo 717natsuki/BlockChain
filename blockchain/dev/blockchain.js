@@ -81,7 +81,6 @@ BlockChain.prototype.proofOfWork = function(previousBlockHash, currentBlockData)
   while(hash.substring(0,4) !== '0000'){
     nance ++;
     hash = this.hashBlock(previousBlockHash, currentBlockData, nance)
-    console.log(hash);
   }
   return nance;
 }
