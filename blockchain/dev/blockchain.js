@@ -3,6 +3,9 @@ const sha256 = require ('sha256');
 function BlockChain(){
   this.chain = [];
   this.pendingTransactions = [];
+
+  // needs to create first block
+  this.createNewBlock(0, '0', '0');
 }
 
 // 新しいブロックを作成するメソッド。
@@ -59,10 +62,28 @@ BlockChain.prototype.createNewTransaction = function(amount, sender, recipient){
   return this.getLastBlock()['index'] + 1;
 }
 
+// previousBlockHash -> 前回のハッシュした値
+// currentBlockData ->　今回の「トランズアクション」の値（JSON）
+// nance ->
+// この関数は今回のハッシュ値を出力する関数
 BlockChain.prototype.hashBlock = function(previousBlockHash, currentBlockData, nance){
   const dataString = previousBlockHash + nance.toString() + JSON.stringify(currentBlockData);
   const hash = sha256(dataString);
   return hash;
+}
+
+// hashblockでハッシュをつくりまくり、proofOfWorkでそのハッシュでいいのか確認する。
+BlockChain.prototype.proofOfWork = function(previousBlockHash, currentBlockData){
+  let nance = 0;
+  let hash = this.hashBlock(previousBlockHash, currentBlockData, nance)
+
+  // ハッシュ値の最初の四文字が0000の時だけNanceを出力する。
+  while(hash.substring(0,4) !== '0000'){
+    nance ++;
+    hash = this.hashBlock(previousBlockHash, currentBlockData, nance)
+    console.log(hash);
+  }
+  return nance;
 }
 
 

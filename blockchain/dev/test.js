@@ -8,4 +8,4 @@ bitcoin.createNewTransaction(9232,'you','me')
 
 
 
-console.log(bitcoin.hashBlock('OSDIJFOS', bitcoin.chain[0], 32));
+console.log(bitcoin.proofOfWork('OSDIJFOS', bitcoin.chain[0]));
