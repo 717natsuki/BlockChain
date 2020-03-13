@@ -1,3 +1,3 @@
 # BlockChain
 
-![](BlockChain/images/image.gif)
+![](blockchain/images/image.gif)
